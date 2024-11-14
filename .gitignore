@@ -53,3 +53,5 @@ venv.bak/
 *.sublime-workspace
 .DS_Store
 Thumbs.db
+credentials.json
+token.json

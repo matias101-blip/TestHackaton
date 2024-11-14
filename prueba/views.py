@@ -1,7 +1,7 @@
 import json
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.views import View
+from django.shortcuts import render
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -12,15 +12,13 @@ from google.oauth2.credentials import Credentials
 SCOPES = ["https://mail.google.com/"]
 
 class NameView(View):
-    template_name = 'prueba/prueba.html'
-
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        # Renderizar la plantilla cuando se accede con GET
+        return render(request, 'prueba/prueba.html')
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         filter_messages = data.get('filter_messages')
-        print(f"Filter messages: {filter_messages}")
         
         creds = None
         if os.path.exists("token.json"):
@@ -30,11 +28,8 @@ class NameView(View):
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES
-                )
+                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
                 creds = flow.run_local_server(port=0)
-            
             with open("token.json", "w") as token:
                 token.write(creds.to_json())
 
@@ -46,23 +41,46 @@ class NameView(View):
             messages = results.get("messages", [])
 
             if not messages:
-                return JsonResponse({'message': 'No messages found in Promotions.'})
+                return JsonResponse({'message': 'No messages found.'})
             
             message_contents = []
             for message in messages:
                 msg = service.users().messages().get(userId="me", id=message['id']).execute()
-                msg_snippet = msg.get('snippet')
-                message_contents.append(msg_snippet)
-            
-            context = {
-                'message_contents': message_contents
-            }
-            
-            # for message in message_contents:
-            #     print(f"Message: {message}")
                 
+                headers = msg.get("payload", {}).get("headers", [])
+                sender = next((header["value"] for header in headers if header["name"] == "From"), "Remitente desconocido")
+                subject = next((header["value"] for header in headers if header["name"] == "Subject"), "Sin asunto")
+                
+                profile_image_url = f"https://www.gravatar.com/avatar/{hash(sender)}?d=identicon"
+
+                message_contents.append({
+                    'id': message['id'],
+                    'sender': sender,
+                    'subject': subject,
+                    'profileImage': profile_image_url,
+                })
             
-            return JsonResponse(context)
+            return JsonResponse({'message_contents': message_contents})
         
         except HttpError as error:
             return JsonResponse({'error': str(error)})
+
+class DeleteEmailsView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        message_ids = data.get('message_ids', [])
+
+        if not message_ids:
+            return JsonResponse({'error': 'No emails selected for deletion.'}, status=400)
+
+        try:
+            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+            service = build("gmail", "v1", credentials=creds)
+
+            for msg_id in message_ids:
+                service.users().messages().delete(userId="me", id=msg_id).execute()
+
+            return JsonResponse({'success': True})
+
+        except HttpError as error:
+            return JsonResponse({'error': f'Error deleting emails: {error}'}, status=500)

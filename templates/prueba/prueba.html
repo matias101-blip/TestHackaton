@@ -1,18 +1,22 @@
+<!-- templates/prueba/prueba.html -->
 {% extends 'layout/base.html' %}
 {% block content %}
-<div class="mx-auto p-8 text-center">
-  <h1>Prueba</h1>
-  <p>Esto es una prueba</p>
-  <label for="select">Selecciona un filtro</label>
-    <select id="select" class="p-2 bg-blue-100 rounded-md">
-        <option value="promotions">Promociones</option>
-        <option value="social">Redes Sociales</option>
-        <option value="notifications">Notificaciones</option>
-    </select>
-  <button id="send" class="text-center p-2 bg-blue-100 rounded-md">Prueba</button>
+<div class="mx-auto max-w-xl p-8 text-center">
+  <h1 class="text-2xl font-bold mb-4">Filtrar Correos no Deseados</h1>
+  <p class="mb-4">Selecciona una categoría para ver y eliminar correos no deseados.</p>
+
+  <label for="select" class="block text-lg mb-2">Selecciona un filtro:</label>
+  <select id="select" class="w-full p-2 border border-gray-300 rounded-md mb-4">
+      <option value="promotions">Promociones</option>
+      <option value="social">Redes Sociales</option>
+      <option value="notifications">Notificaciones</option>
+  </select>
+
+  <button id="send" class="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Buscar Correos</button>
 </div>
 
-<div id="messageContents"></div>
+<div id="messageContents" class="mx-auto max-w-xl p-4 space-y-4"></div>
+<button id="deleteSelected" class="w-full max-w-xl p-2 bg-red-500 text-white rounded-md hover:bg-red-600 mx-auto hidden">Eliminar Seleccionados</button>
 
 <script>
     function getCookie(name) {
@@ -31,40 +35,91 @@
     }
 
     const csrftoken = getCookie('csrftoken');
-    const send = document.getElementById('send');
+    const sendButton = document.getElementById('send');
     const select = document.getElementById('select');
+    const messageContainer = document.getElementById('messageContents');
+    const deleteSelectedButton = document.getElementById('deleteSelected');
 
-    send.addEventListener('click', async () => {
+    sendButton.addEventListener('click', async () => {
         const response = await fetch('/prueba/name/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken
             },
-            body: JSON.stringify({
-                message: 'Hola desde el cliente',
-                filter_messages: select.value
-            })
+            body: JSON.stringify({ filter_messages: select.value })
         });
 
         const data = await response.json();
         console.log(data);
 
-        // Limpiar el contenedor de mensajes
-        const messageContainer = document.getElementById('messageContents');
         messageContainer.innerHTML = '';
-
-        // Mostrar los mensajes en el contenedor
         if (data.message_contents) {
-            data.message_contents.forEach((msg, index) => {
-                const messageElement = document.createElement('p');
-                messageElement.textContent = `Mensaje ${index + 1}: ${msg}`;
+            data.message_contents.forEach((msg) => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('border', 'p-4', 'rounded-md', 'flex', 'items-center', 'justify-between', 'space-x-4');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.classList.add('message-checkbox');
+                checkbox.value = msg.id;
+
+                const messageInfo = document.createElement('div');
+                messageInfo.classList.add('text-left');
+                
+                const senderImg = document.createElement('img');
+                senderImg.src = msg.profileImage || 'default-image-url';
+                senderImg.alt = "Imagen de perfil";
+                senderImg.classList.add('w-10', 'h-10', 'rounded-full', 'mr-4');
+
+                const sender = document.createElement('p');
+                sender.textContent = `De: ${msg.sender}`;
+                sender.classList.add('font-bold');
+
+                const subject = document.createElement('p');
+                subject.textContent = `Asunto: ${msg.subject}`;
+                subject.classList.add('text-gray-600');
+
+                messageInfo.appendChild(senderImg);
+                messageInfo.appendChild(sender);
+                messageInfo.appendChild(subject);
+
+                messageElement.appendChild(checkbox);
+                messageElement.appendChild(messageInfo);
                 messageContainer.appendChild(messageElement);
             });
-        } else if (data.message) {
-            messageContainer.textContent = data.message;
-        } else if (data.error) {
-            messageContainer.textContent = `Error: ${data.error}`;
+
+            deleteSelectedButton.classList.remove('hidden');
+        } else {
+            messageContainer.textContent = data.message || `Error: ${data.error}`;
+            deleteSelectedButton.classList.add('hidden');
+        }
+    });
+
+    deleteSelectedButton.addEventListener('click', async () => {
+        const selectedMessages = Array.from(document.querySelectorAll('.message-checkbox:checked'))
+                                      .map(checkbox => checkbox.value);
+
+        if (selectedMessages.length === 0) {
+            alert("Selecciona al menos un correo para eliminar.");
+            return;
+        }
+
+        const response = await fetch('/prueba/delete/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({ message_ids: selectedMessages })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Correos eliminados correctamente.");
+            sendButton.click();
+        } else {
+            alert("Hubo un error al eliminar los correos.");
         }
     });
 </script>
