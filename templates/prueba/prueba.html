@@ -1,0 +1,71 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<div class="mx-auto p-8 text-center">
+  <h1>Prueba</h1>
+  <p>Esto es una prueba</p>
+  <label for="select">Selecciona un filtro</label>
+    <select id="select" class="p-2 bg-blue-100 rounded-md">
+        <option value="promotions">Promociones</option>
+        <option value="social">Redes Sociales</option>
+        <option value="notifications">Notificaciones</option>
+    </select>
+  <button id="send" class="text-center p-2 bg-blue-100 rounded-md">Prueba</button>
+</div>
+
+<div id="messageContents"></div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+    const send = document.getElementById('send');
+    const select = document.getElementById('select');
+
+    send.addEventListener('click', async () => {
+        const response = await fetch('/prueba/name/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                message: 'Hola desde el cliente',
+                filter_messages: select.value
+            })
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        // Limpiar el contenedor de mensajes
+        const messageContainer = document.getElementById('messageContents');
+        messageContainer.innerHTML = '';
+
+        // Mostrar los mensajes en el contenedor
+        if (data.message_contents) {
+            data.message_contents.forEach((msg, index) => {
+                const messageElement = document.createElement('p');
+                messageElement.textContent = `Mensaje ${index + 1}: ${msg}`;
+                messageContainer.appendChild(messageElement);
+            });
+        } else if (data.message) {
+            messageContainer.textContent = data.message;
+        } else if (data.error) {
+            messageContainer.textContent = `Error: ${data.error}`;
+        }
+    });
+</script>
+{% endblock %}
