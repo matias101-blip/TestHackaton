@@ -1,0 +1,87 @@
+[
+    {
+        "Make": "ACURA",
+        "Model": "ILX",
+        "Vehicle_Class": "COMPACT",
+        "Engine_Size(L)": 2.0,
+        "Cylinders": 4,
+        "Transmission": "AS5",
+        "Fuel_Type": "Z",
+        "Fuel_Consumption_City(L/100 km)": 9.9,
+        "Fuel_Consumption_Hwy(L/100 km)": 6.7,
+        "Fuel_Consumption_Comb(L/100 km)": 8.5,
+        "Fuel_Consumption_Comb(mpg)": 33,
+        "CO2_Emissions(g/km)": 196
+    },
+    {
+        "Make": "ACURA",
+        "Model": "ILX",
+        "Vehicle_Class": "COMPACT",
+        "Engine_Size(L)": 2.4,
+        "Cylinders": 4,
+        "Transmission": "M6",
+        "Fuel_Type": "Z",
+        "Fuel_Consumption_City(L/100 km)": 11.2,
+        "Fuel_Consumption_Hwy(L/100 km)": 7.7,
+        "Fuel_Consumption_Comb(L/100 km)": 9.6,
+        "Fuel_Consumption_Comb(mpg)": 29,
+        "CO2_Emissions(g/km)": 221
+    },
+    {
+        "Make": "ACURA",
+        "Model": "ILX HYBRID",
+        "Vehicle_Class": "COMPACT",
+        "Engine_Size(L)": 1.5,
+        "Cylinders": 4,
+        "Transmission": "AV7",
+        "Fuel_Type": "Z",
+        "Fuel_Consumption_City(L/100 km)": 6.0,
+        "Fuel_Consumption_Hwy(L/100 km)": 5.8,
+        "Fuel_Consumption_Comb(L/100 km)": 5.9,
+        "Fuel_Consumption_Comb(mpg)": 48,
+        "CO2_Emissions(g/km)": 136
+    },
+    {
+        "Make": "ACURA",
+        "Model": "MDX 4WD",
+        "Vehicle_Class": "SUV - SMALL",
+        "Engine_Size(L)": 3.5,
+        "Cylinders": 6,
+        "Transmission": "AS6",
+        "Fuel_Type": "Z",
+        "Fuel_Consumption_City(L/100 km)": 12.7,
+        "Fuel_Consumption_Hwy(L/100 km)": 9.1,
+        "Fuel_Consumption_Comb(L/100 km)": 11.1,
+        "Fuel_Consumption_Comb(mpg)": 25,
+        "CO2_Emissions(g/km)": 255
+    },
+    {
+        "Make": "ACURA",
+        "Model": "RDX AWD",
+        "Vehicle_Class": "SUV - SMALL",
+        "Engine_Size(L)": 3.5,
+        "Cylinders": 6,
+        "Transmission": "AS6",
+        "Fuel_Type": "Z",
+        "Fuel_Consumption_City(L/100 km)": 12.1,
+        "Fuel_Consumption_Hwy(L/100 km)": 8.7,
+        "Fuel_Consumption_Comb(L/100 km)": 10.6,
+        "Fuel_Consumption_Comb(mpg)": 27,
+        "CO2_Emissions(g/km)": 244
+    },
+    {
+        "Make": "ACURA",
+        "Model": "RLX",
+        "Vehicle_Class": "MID-SIZE",
+        "Engine_Size(L)": 3.5,
+        "Cylinders": 6,
+        "Transmission": "AS6",
+        "Fuel_Type": "Z",
+        "Fuel_Consumption_City(L/100 km)": 11.9,
+        "Fuel_Consumption_Hwy(L/100 km)": 7.7,
+        "Fuel_Consumption_Comb(L/100 km)": 10.0,
+        "Fuel_Consumption_Comb(mpg)": 28,
+        "CO2_Emissions(g/km)": 230
+    }
+]
+
