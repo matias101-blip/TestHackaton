@@ -1,89 +1,13 @@
 {
-  "vehicles": [
-    {
-      "make": "ACURA",
-      "model": "ILX",
-      "vehicleClass": "COMPACT",
-      "engineSizeL": 2,
-      "cylinders": 4,
-      "transmission": "AS5",
-      "fuelType": "Z",
-      "fuelConsumptionCityL_100km": 9.9,
-      "fuelConsumptionHwyL_100km": 6.7,
-      "fuelConsumptionCombL_100km": 8.5,
-      "fuelConsumptionCombMpg": 33,
-      "co2EmissionsG_km": 196
-    },
-    {
-      "make": "ACURA",
-      "model": "ILX",
-      "vehicleClass": "COMPACT",
-      "engineSizeL": 2.4,
-      "cylinders": 4,
-      "transmission": "M6",
-      "fuelType": "Z",
-      "fuelConsumptionCityL_100km": 11.2,
-      "fuelConsumptionHwyL_100km": 7.7,
-      "fuelConsumptionCombL_100km": 9.6,
-      "fuelConsumptionCombMpg": 29,
-      "co2EmissionsG_km": 221
-    },
-    {
-      "make": "ACURA",
-      "model": "ILX HYBRID",
-      "vehicleClass": "COMPACT",
-      "engineSizeL": 1.5,
-      "cylinders": 4,
-      "transmission": "AV7",
-      "fuelType": "Z",
-      "fuelConsumptionCityL_100km": 6.0,
-      "fuelConsumptionHwyL_100km": 5.8,
-      "fuelConsumptionCombL_100km": 5.9,
-      "fuelConsumptionCombMpg": 48,
-      "co2EmissionsG_km": 136
-    },
-    {
-      "make": "ACURA",
-      "model": "MDX 4WD",
-      "vehicleClass": "SUV - SMALL",
-      "engineSizeL": 3.5,
-      "cylinders": 6,
-      "transmission": "AS6",
-      "fuelType": "Z",
-      "fuelConsumptionCityL_100km": 12.7,
-      "fuelConsumptionHwyL_100km": 9.1,
-      "fuelConsumptionCombL_100km": 11.1,
-      "fuelConsumptionCombMpg": 25,
-      "co2EmissionsG_km": 255
-    },
-    {
-      "make": "ACURA",
-      "model": "RDX AWD",
-      "vehicleClass": "SUV - SMALL",
-      "engineSizeL": 3.5,
-      "cylinders": 6,
-      "transmission": "AS6",
-      "fuelType": "Z",
-      "fuelConsumptionCityL_100km": 12.1,
-      "fuelConsumptionHwyL_100km": 8.7,
-      "fuelConsumptionCombL_100km": 10.6,
-      "fuelConsumptionCombMpg": 27,
-      "co2EmissionsG_km": 244
-    },
-    {
-      "make": "ACURA",
-      "model": "RLX",
-      "vehicleClass": "MID-SIZE",
-      "engineSizeL": 3.5,
-      "cylinders": 6,
-      "transmission": "AS6",
-      "fuelType": "Z",
-      "fuelConsumptionCityL_100km": 11.9,
-      "fuelConsumptionHwyL_100km": 7.7,
-      "fuelConsumptionCombL_100km": 10.0,
-      "fuelConsumptionCombMpg": 28,
-      "co2EmissionsG_km": 230
-    }
-  ]
+  "posts": [
+    { "id": "1", "title": "a title", "views": 100 },
+    { "id": "2", "title": "another title", "views": 200 }
+  ],
+  "comments": [
+    { "id": "1", "text": "a comment about post 1", "postId": "1" },
+    { "id": "2", "text": "another comment about post 1", "postId": "1" }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
 }
-
